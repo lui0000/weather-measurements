@@ -1,4 +1,10 @@
 package com.eliza.project3.WeatherMeasurements.repositories;
 
-public class SensorRepository {
+
+import com.eliza.project3.WeatherMeasurements.models.Sensor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface SensorRepository extends JpaRepository<Sensor, Integer> {
 }

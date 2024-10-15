@@ -1,6 +1,9 @@
 package com.eliza.project3.WeatherMeasurements.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Sensor")
@@ -14,6 +17,9 @@ public class Sensor {
     @NotEmpty(message = "Name should not be empty")
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "owner")
+    private List<Measurement> measurements;
 
     public Sensor() {
     }
