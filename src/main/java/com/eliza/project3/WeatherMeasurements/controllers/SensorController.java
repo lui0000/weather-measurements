@@ -1,6 +1,7 @@
 package com.eliza.project3.WeatherMeasurements.controllers;
 
 import com.eliza.project3.WeatherMeasurements.dto.MeasurementDTO;
+import com.eliza.project3.WeatherMeasurements.dto.SensorDTO;
 import com.eliza.project3.WeatherMeasurements.models.Sensor;
 import com.eliza.project3.WeatherMeasurements.services.SensorService;
 import com.eliza.project3.WeatherMeasurements.util.*;
@@ -31,18 +32,22 @@ public class SensorController {
     }
 
     @GetMapping
-    public List<Sensor> getSensors() {
-        return sensorService.findAll();
+    public List<SensorDTO> getSensors() {
+        return sensorService.findAll().stream().map(this::convertToSensorDTO).collect(Collectors.toList());
     }
+
+
 
     @GetMapping("/{id}")
-    public Sensor getSensor(@PathVariable("id") int id) {
+    public SensorDTO getSensor(@PathVariable("id") int id) {
         //status 200
-        return sensorService.findOne(id);
+        return convertToSensorDTO(sensorService.findOne(id));
     }
 
+
+
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid Sensor sensor, BindingResult bindingResult) {
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid SensorDTO sensorDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
 
@@ -54,9 +59,12 @@ public class SensorController {
             }
             throw new SensorNotCreatedException(errorMsg.toString());
         }
-        sensorService.save(sensor);
+        sensorService.save(convertToSensor(sensorDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+
+
     @ExceptionHandler
     private ResponseEntity<SensorErrorResponse> handleException(SensorNotFoundException e) {
         SensorErrorResponse response = new SensorErrorResponse(
@@ -76,6 +84,14 @@ public class SensorController {
     }
 
 
+
+    private SensorDTO convertToSensorDTO(Sensor sensor) {
+        return modelMapper.map(sensor, SensorDTO.class);
+    }
+
+    private Sensor convertToSensor(SensorDTO sensorDTO) {
+        return modelMapper.map(sensorDTO, Sensor.class);
+    }
 
 
 

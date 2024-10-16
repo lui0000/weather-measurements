@@ -1,8 +1,8 @@
 package com.eliza.project3.WeatherMeasurements.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 import java.time.LocalDateTime;
 
@@ -15,18 +15,16 @@ public class Measurement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty(message = "Temperature should not be empty")
-    @Size(min = -100, max = 100, message = "Temperature should be between 2 and 30 characters")
+    @Min(value = -100, message = "Temperature should not be less than -100")
+    @Max(value = 100, message = "Temperature should not be more than 100")
     @Column(name = "temperature")
     private int temperature;
 
-    @NotEmpty(message = "isRaining should not be empty")
     @Column(name = "is_raining")
     private boolean isRaining;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
