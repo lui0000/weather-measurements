@@ -4,6 +4,7 @@ package com.eliza.project3.WeatherMeasurements.services;
 import com.eliza.project3.WeatherMeasurements.models.Measurement;
 import com.eliza.project3.WeatherMeasurements.models.Sensor;
 import com.eliza.project3.WeatherMeasurements.repositories.MeasurementRepository;
+import com.eliza.project3.WeatherMeasurements.repositories.SensorRepository;
 import com.eliza.project3.WeatherMeasurements.util.SensorNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,12 @@ import java.util.Optional;
 public class MeasurementService {
 
     private final MeasurementRepository measurementRepository;
+    private final SensorRepository sensorRepository;
 
     @Autowired
-    public MeasurementService(MeasurementRepository measurementRepository) {
+    public MeasurementService(MeasurementRepository measurementRepository, SensorRepository sensorRepository) {
         this.measurementRepository = measurementRepository;
+        this.sensorRepository = sensorRepository;
     }
 
     public List<Measurement> findAll() {
@@ -36,14 +39,25 @@ public class MeasurementService {
 
     @Transactional
     public void save(Measurement measurement) {
-        measurement.setCreatedAt(LocalDateTime.now());
-        Sensor sensor = measurement.getOwner();
-        List<Measurement> measurements =  new ArrayList<>();
-        measurements.add(measurement);
-        sensor.setMeasurements(measurements);
+        if (measurement.getOwner() != null) {
+            Sensor sensor = sensorRepository.findByName(measurement.getOwner().getName());
+            if (sensor != null) {
+                measurement.setOwner(sensor);
+                sensor.getMeasurements().add(measurement);
+            } else {
+                throw new SensorNotFoundException();
+            }
+        } else {
+            throw new IllegalArgumentException("Measurement must have an owner");
+        }
+
+        enrichMeasurement(measurement);
         measurementRepository.save(measurement);
 
+
     }
+
+
 
 
     public void enrichMeasurement(Measurement measurement) {

@@ -18,10 +18,10 @@ public class Measurement {
     @Min(value = -100, message = "Temperature should not be less than -100")
     @Max(value = 100, message = "Temperature should not be more than 100")
     @Column(name = "temperature")
-    private int temperature;
+    private double temperature;
 
     @Column(name = "is_raining")
-    private boolean isRaining;
+    private boolean raining;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -33,9 +33,9 @@ public class Measurement {
     public Measurement() {
     }
 
-    public Measurement(int temperature, boolean isRaining, LocalDateTime createdAt, Sensor owner) {
+    public Measurement(double temperature, boolean raining, LocalDateTime createdAt, Sensor owner) {
         this.temperature = temperature;
-        this.isRaining = isRaining;
+        this.raining = raining;
         this.createdAt = createdAt;
         this.owner = owner;
     }
@@ -48,20 +48,20 @@ public class Measurement {
         this.id = id;
     }
 
-    public int getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(int temperature) {
+    public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
 
     public boolean isRaining() {
-        return isRaining;
+        return raining;
     }
 
     public void setRaining(boolean raining) {
-        isRaining = raining;
+        this.raining = raining;
     }
 
     public LocalDateTime getCreatedAt() {
