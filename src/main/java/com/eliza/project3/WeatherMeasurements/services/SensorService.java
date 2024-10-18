@@ -35,4 +35,7 @@ public class SensorService {
         sensorRepository.save(sensor);
     }
 
+    public Optional<Sensor> getSensorByName(String name) {
+        return sensorRepository.findByName(name);
+    }
 }

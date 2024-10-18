@@ -6,7 +6,7 @@ public class SensorDTO {
     @NotEmpty(message = "Name should not be empty")
     private String name;
 
-    String getName() {
+    public String getName() {
         return name;
     }
 

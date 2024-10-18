@@ -28,7 +28,7 @@ public class Measurement {
 
     @ManyToOne
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
-    private Sensor owner;
+    private Sensor sensor;
 
     public Measurement() {
     }
@@ -37,7 +37,7 @@ public class Measurement {
         this.temperature = temperature;
         this.raining = raining;
         this.createdAt = createdAt;
-        this.owner = owner;
+        this.sensor = owner;
     }
 
     public int getId() {
@@ -72,11 +72,11 @@ public class Measurement {
         this.createdAt = createdAt;
     }
 
-    public Sensor getOwner() {
-        return owner;
+    public Sensor getSensor() {
+        return sensor;
     }
 
-    public void setOwner(Sensor owner) {
-        this.owner = owner;
+    public void setSensor(Sensor sensor) {
+        this.sensor = sensor;
     }
 }

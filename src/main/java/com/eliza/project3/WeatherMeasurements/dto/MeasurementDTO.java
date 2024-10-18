@@ -15,7 +15,7 @@ public class MeasurementDTO {
 
     private boolean raining;
 
-    private SensorDTO owner;
+    private SensorDTO sensor;
 
     public double getTemperature() {
         return temperature;
@@ -33,11 +33,11 @@ public class MeasurementDTO {
         this.raining = raining;
     }
 
-    public SensorDTO getOwner() {
-        return owner;
+    public SensorDTO getSensor() {
+        return sensor;
     }
 
-    public void setOwner(SensorDTO owner) {
-        this.owner = owner;
+    public void setSensor(SensorDTO sensor) {
+        this.sensor = sensor;
     }
 }

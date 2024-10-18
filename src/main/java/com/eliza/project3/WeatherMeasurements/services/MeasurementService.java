@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,10 +38,12 @@ public class MeasurementService {
 
     @Transactional
     public void save(Measurement measurement) {
-        if (measurement.getOwner() != null) {
-            Sensor sensor = sensorRepository.findByName(measurement.getOwner().getName());
-            if (sensor != null) {
-                measurement.setOwner(sensor);
+        if (measurement.getSensor() != null) {
+            Optional<Sensor> sensorOptional = sensorRepository.findByName(measurement.getSensor().getName());
+
+            if (sensorOptional.isPresent()) {
+                Sensor sensor = sensorOptional.get();
+                measurement.setSensor(sensor);
                 sensor.getMeasurements().add(measurement);
             } else {
                 throw new SensorNotFoundException();
@@ -53,9 +54,8 @@ public class MeasurementService {
 
         enrichMeasurement(measurement);
         measurementRepository.save(measurement);
-
-
     }
+
 
 
 
