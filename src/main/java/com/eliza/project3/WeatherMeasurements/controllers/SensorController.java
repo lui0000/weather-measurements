@@ -48,7 +48,7 @@ public class SensorController {
 
 
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid SensorDTO sensorDTO, BindingResult bindingResult) {
 
         sensorValidator.validate(sensorDTO, bindingResult);
